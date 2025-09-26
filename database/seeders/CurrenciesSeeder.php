@@ -7,6 +7,9 @@ use App\Models\Currency;
 
 class CurrenciesSeeder extends Seeder
 {
+    /**
+     * Seed the currencies table.
+     */
     public function run(): void
     {
         $currencies = [

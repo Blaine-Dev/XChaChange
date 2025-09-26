@@ -13,6 +13,9 @@ class CurrencyControllerTest extends TestCase
 
     protected $seed = false;
 
+    /**
+     * Set up the test environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -46,6 +49,9 @@ class CurrencyControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Test that the API returns all currencies.
+     */
     public function test_can_get_all_currencies()
     {
         $response = $this->getJson('/api/currencies');
@@ -54,6 +60,9 @@ class CurrencyControllerTest extends TestCase
                 ->assertJsonCount(3);
     }
 
+    /**
+     * Test that the API returns all currencies.
+     */
     public function test_can_get_currency_list_for_selection()
     {
         $response = $this->getJson('/api/currencies/list');
@@ -67,6 +76,9 @@ class CurrencyControllerTest extends TestCase
         }
     }
 
+    /**
+     * Test that the API returns all inactive currencies.
+     */
     public function test_can_get_inactive_currencies_only()
     {
         $response = $this->getJson('/api/currencies/inactive');
@@ -75,6 +87,9 @@ class CurrencyControllerTest extends TestCase
                 ->assertJsonCount(1); // Only EUR is inactive
     }
 
+    /**
+     * Test that the API returns the source currency.
+     */
     public function test_can_get_source_currency()
     {
         // Mock the config value
@@ -86,6 +101,9 @@ class CurrencyControllerTest extends TestCase
                 ->assertJson(['source' => 'ZAR']);
     }
 
+    /**
+     * Test that the API returns a specific currency.
+     */
     public function test_can_show_specific_currency()
     {
         $response = $this->getJson('/api/currencies/USD');
@@ -99,6 +117,9 @@ class CurrencyControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API returns a specific currency.
+     */
     public function test_returns_404_for_nonexistent_currency()
     {
         $response = $this->getJson('/api/currencies/XXX');
@@ -106,6 +127,9 @@ class CurrencyControllerTest extends TestCase
         $response->assertStatus(404);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_can_update_currency_field()
     {
         $response = $this->postJson('/api/currencies/update/USD/exchange_rate/0.085');
@@ -118,6 +142,9 @@ class CurrencyControllerTest extends TestCase
         $this->assertEquals(0.085, $currency->exchange_rate);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_can_update_surcharge_percentage()
     {
         $response = $this->postJson('/api/currencies/update/USD/surcharge_percentage/8.0');
@@ -128,6 +155,9 @@ class CurrencyControllerTest extends TestCase
         $this->assertEquals(8.0, $currency->surcharge_percentage);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_can_update_special_discount_percentage()
     {
         $response = $this->postJson('/api/currencies/update/USD/special_discount_percentage/1.5');
@@ -138,6 +168,9 @@ class CurrencyControllerTest extends TestCase
         $this->assertEquals(1.5, $currency->special_discount_percentage);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_update_fails_for_nonexistent_currency()
     {
         $response = $this->postJson('/api/currencies/update/XXX/exchange_rate/0.085');
@@ -145,6 +178,9 @@ class CurrencyControllerTest extends TestCase
         $response->assertStatus(404);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_update_fails_for_invalid_field()
     {
         $response = $this->postJson('/api/currencies/update/USD/invalid_field/123');
@@ -153,6 +189,9 @@ class CurrencyControllerTest extends TestCase
                 ->assertJson(['error' => 'Invalid field']);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_can_activate_currency()
     {
         // First ensure EUR is inactive
@@ -168,6 +207,9 @@ class CurrencyControllerTest extends TestCase
         $this->assertTrue((bool) $currency->is_active);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_can_deactivate_currency()
     {
         $response = $this->postJson('/api/currencies/deactivate/USD');
@@ -179,6 +221,9 @@ class CurrencyControllerTest extends TestCase
         $this->assertFalse((bool) $currency->is_active);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_can_enable_send_order_email()
     {
         $response = $this->postJson('/api/currencies/enableSendOrderEmail/USD');
@@ -190,6 +235,9 @@ class CurrencyControllerTest extends TestCase
         $this->assertTrue((bool) $currency->send_order_email);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_can_disable_send_order_email()
     {
         // First ensure GBP has email enabled
@@ -205,6 +253,9 @@ class CurrencyControllerTest extends TestCase
         $this->assertFalse((bool) $currency->send_order_email);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_bulk_update_all_currencies()
     {
         config([
@@ -240,6 +291,9 @@ class CurrencyControllerTest extends TestCase
         $this->assertEquals(5.0, $gbp->surcharge_percentage);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_bulk_update_handles_api_failure()
     {
         config([
@@ -260,6 +314,9 @@ class CurrencyControllerTest extends TestCase
                 ->assertJson(['message' => 'API request failed']);
     }
 
+    /**
+     * Test that the API updates a currency field.
+     */
     public function test_currency_route_validates_currency_code_format()
     {
         $response = $this->getJson('/api/currencies/US');

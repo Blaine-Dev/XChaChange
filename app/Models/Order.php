@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use SoftDeletes;
     use HasFactory;
 
@@ -30,6 +31,11 @@ class Order extends Model
         'special_discount_amount',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'exchange_rate' => 'decimal:8',
         'surcharge_percentage' => 'decimal:2',
@@ -41,11 +47,21 @@ class Order extends Model
         'special_discount_amount' => 'decimal:2',
     ];
 
+    /**
+     * Get the user that owns the order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Get the foreign currency that owns the order.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function foreignCurrency()
     {
         return $this->belongsTo(Currency::class, 'foreign_currency_id');

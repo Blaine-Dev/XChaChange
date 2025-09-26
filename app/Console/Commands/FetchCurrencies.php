@@ -16,6 +16,7 @@ class FetchCurrencies extends Command
         $this->info('Fetching currency rates...');
 
         try {
+            // Make API request to currency service with configured parameters
             $response = Http::get(config('services.currency.base_url'), [
                 'access_key' => config('services.currency.api_key'),
                 'currencies' => implode(',', config('services.currency.currencies')),
@@ -37,12 +38,17 @@ class FetchCurrencies extends Command
 
             $sourceCurrency = config('services.currency.source');
 
+            // Process each currency rate from the API response
             foreach ($data['quotes'] as $key => $rate) {
+                // Extract currency code by removing source currency prefix (e.g., 'USDEUR' -> 'EUR')
                 $currencyCode = str_replace($sourceCurrency, '', $key);
 
+                // Find existing currency or create new instance
                 $currency = Currency::firstOrNew(['currency' => $currencyCode]);
                 $currency->exchange_rate = $rate;
 
+                // Preserve existing values for currencies that already exist in database
+                // Set default values only for new currencies
                 $currency->surcharge_percentage = $currency->surcharge_percentage ?? 0;
                 $currency->special_discount_percentage = $currency->special_discount_percentage ?? 0;
                 $currency->send_order_email = $currency->send_order_email ?? false;

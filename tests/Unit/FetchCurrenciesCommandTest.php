@@ -12,6 +12,9 @@ class FetchCurrenciesCommandTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Set up the test environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -26,6 +29,9 @@ class FetchCurrenciesCommandTest extends TestCase
         ]);
     }
 
+    /**
+     * Test that the command fetches and updates currencies successfully.
+     */
     public function test_command_fetches_and_updates_currencies_successfully()
     {
         // Mock successful API response
@@ -75,6 +81,9 @@ class FetchCurrenciesCommandTest extends TestCase
         });
     }
 
+    /**
+     * Test that the command updates existing currencies.
+     */
     public function test_command_updates_existing_currencies()
     {
         // Create existing currency with different rate
@@ -108,6 +117,9 @@ class FetchCurrenciesCommandTest extends TestCase
         $this->assertTrue((bool) $currency->is_active); // Preserved
     }
 
+    /**
+     * Test that the command preserves existing currency settings.
+     */
     public function test_command_preserves_existing_currency_settings()
     {
         // Create existing currency with custom settings
@@ -143,6 +155,9 @@ class FetchCurrenciesCommandTest extends TestCase
         $this->assertFalse((bool) $currency->is_active); // Should remain inactive
     }
 
+    /**
+     * Test that the command sets default values for new currencies.
+     */
     public function test_command_sets_default_values_for_new_currencies()
     {
         Http::fake([
@@ -165,6 +180,9 @@ class FetchCurrenciesCommandTest extends TestCase
         $this->assertTrue((bool) $currency->is_active); // Default
     }
 
+    /**
+     * Test that the command handles API request failure.
+     */
     public function test_command_handles_api_request_failure()
     {
         // Mock failed API response
@@ -181,6 +199,9 @@ class FetchCurrenciesCommandTest extends TestCase
         $this->assertEquals(0, Currency::count());
     }
 
+    /**
+     * Test that the command handles API response without quotes.
+     */
     public function test_command_handles_api_response_without_quotes()
     {
         // Mock API response without quotes
@@ -200,6 +221,9 @@ class FetchCurrenciesCommandTest extends TestCase
         $this->assertEquals(0, Currency::count());
     }
 
+    /**
+     * Test that the command strips source currency from quote keys.
+     */
     public function test_command_strips_source_currency_from_quote_keys()
     {
         Http::fake([
@@ -223,6 +247,9 @@ class FetchCurrenciesCommandTest extends TestCase
         $this->assertDatabaseMissing('currencies', ['currency' => 'ZARGBP']);
     }
 
+    /**
+     * Test that the command output messages.
+     */
     public function test_command_output_messages()
     {
         Http::fake([
@@ -242,6 +269,9 @@ class FetchCurrenciesCommandTest extends TestCase
         $this->assertStringContainsString('Currencies table updated successfully!', $output);
     }
 
+    /**
+     * Test that the command handles network errors gracefully.
+     */
     public function test_command_handles_network_errors_gracefully()
     {
         // Mock network error

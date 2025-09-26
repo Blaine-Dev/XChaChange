@@ -17,6 +17,9 @@ class OrderControllerTest extends TestCase
     protected $user;
     protected $currency;
 
+    /**
+     * Set up the test environment.
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,6 +37,9 @@ class OrderControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Test that the API returns all orders.
+     */
     public function test_can_list_all_orders()
     {
         Order::factory()->count(3)->create([
@@ -47,6 +53,9 @@ class OrderControllerTest extends TestCase
                 ->assertJsonCount(3);
     }
 
+    /**
+     * Test that the API returns a specific order.
+     */
     public function test_can_show_specific_order()
     {
         $order = Order::create([
@@ -76,6 +85,9 @@ class OrderControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API returns orders for a specific user.
+     */
     public function test_can_show_orders_for_specific_user()
     {
         $anotherUser = User::factory()->create();
@@ -101,6 +113,9 @@ class OrderControllerTest extends TestCase
         }
     }
 
+    /**
+     * Test that the API returns orders for a specific currency.
+     */
     public function test_can_show_orders_for_specific_currency()
     {
         $anotherCurrency = Currency::create([
@@ -133,6 +148,9 @@ class OrderControllerTest extends TestCase
         }
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_can_create_order_with_valid_data()
     {
         Mail::fake();
@@ -174,6 +192,9 @@ class OrderControllerTest extends TestCase
         Mail::assertNotSent(OrderPlaced::class);
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_order_creation_fails_when_no_amount_provided()
     {
         $orderData = [
@@ -187,6 +208,9 @@ class OrderControllerTest extends TestCase
                 ->assertJson(['message' => 'Either foreign_amount or originating_amount must be provided']);
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_order_creation_fails_when_both_amounts_provided()
     {
         $orderData = [
@@ -202,6 +226,9 @@ class OrderControllerTest extends TestCase
                 ->assertJson(['message' => 'Provide either foreign_amount or originating_amount, not both']);
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_can_create_order_with_originating_amount_only()
     {
         $orderData = [
@@ -215,6 +242,9 @@ class OrderControllerTest extends TestCase
         $response->assertStatus(201);
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_creates_order_with_email_notification_when_enabled()
     {
         Mail::fake();
@@ -238,6 +268,9 @@ class OrderControllerTest extends TestCase
         });
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_order_creation_fails_with_invalid_user()
     {
         $orderData = [
@@ -252,6 +285,9 @@ class OrderControllerTest extends TestCase
                 ->assertJsonValidationErrors(['user_id']);
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_order_creation_fails_with_invalid_currency()
     {
         $orderData = [
@@ -266,6 +302,9 @@ class OrderControllerTest extends TestCase
                 ->assertJsonValidationErrors(['foreign_currency_id']);
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_order_creation_fails_with_negative_amounts()
     {
         $orderData = [
@@ -280,6 +319,9 @@ class OrderControllerTest extends TestCase
                 ->assertJsonValidationErrors(['foreign_amount']);
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_order_calculations_are_performed_correctly()
     {
         $orderData = [
@@ -300,6 +342,9 @@ class OrderControllerTest extends TestCase
         $this->assertEquals(1237.20, $order->originating_amount);
     }
 
+    /**
+     * Test that the API creates an order with valid data.
+     */
     public function test_order_with_special_discount_calculations()
     {
         $specialCurrency = Currency::create([

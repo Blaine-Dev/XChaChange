@@ -12,6 +12,9 @@ class OrderTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Test that the order has fillable attributes.
+     */
     public function test_order_has_fillable_attributes()
     {
         $fillable = [
@@ -32,6 +35,9 @@ class OrderTest extends TestCase
         $this->assertEquals($fillable, $order->getFillable());
     }
 
+    /**
+     * Test that the order can be created with valid data.
+     */
     public function test_order_can_be_created_with_valid_data()
     {
         $user = User::factory()->create();
@@ -70,6 +76,9 @@ class OrderTest extends TestCase
         $this->assertEquals(1330.31, $order->total_amount);
     }
 
+    /**
+     * Test that the order belongs to a user.
+     */
     public function test_order_belongs_to_user()
     {
         $user = User::factory()->create();
@@ -99,6 +108,9 @@ class OrderTest extends TestCase
         $this->assertEquals($user->name, $order->user->name);
     }
 
+    /**
+     * Test that the order belongs to a foreign currency.
+     */
     public function test_order_belongs_to_foreign_currency()
     {
         $user = User::factory()->create();
@@ -129,6 +141,9 @@ class OrderTest extends TestCase
         $this->assertEquals('EUR', $order->foreignCurrency->currency);
     }
 
+    /**
+     * Test that the order uses soft deletes.
+     */
     public function test_order_uses_soft_deletes()
     {
         $user = User::factory()->create();
@@ -166,6 +181,9 @@ class OrderTest extends TestCase
         $this->assertTrue(Order::withTrashed()->find($orderId)->trashed());
     }
 
+    /**
+     * Test that the order calculations are consistent.
+     */
     public function test_order_calculations_are_consistent()
     {
         $user = User::factory()->create();
@@ -202,6 +220,9 @@ class OrderTest extends TestCase
         $this->assertEquals(1075.0, $order->total_amount); // 1000 + 75
     }
 
+    /**
+     * Test that the order with special discount.
+     */
     public function test_order_with_special_discount()
     {
         $user = User::factory()->create();

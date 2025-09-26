@@ -12,6 +12,9 @@ class CurrencyTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Test that the currency has the expected fillable attributes.
+     */
     public function test_currency_has_fillable_attributes()
     {
         $fillable = [
@@ -27,6 +30,9 @@ class CurrencyTest extends TestCase
         $this->assertEquals($fillable, $currency->getFillable());
     }
 
+    /**
+     * Test that the currency can be created with valid data.
+     */
     public function test_currency_can_be_created_with_valid_data()
     {
         $currencyData = [
@@ -49,6 +55,9 @@ class CurrencyTest extends TestCase
         $this->assertTrue($currency->is_active);
     }
 
+    /**
+     * Test that the currency has the expected foreign orders relationship.
+     */
     public function test_currency_has_foreign_orders_relationship()
     {
         $user = User::factory()->create();
@@ -78,6 +87,9 @@ class CurrencyTest extends TestCase
         $this->assertEquals($order->id, $currency->foreignOrders()->first()->id);
     }
 
+    /**
+     * Test that the currency defaults to active.
+     */
     public function test_currency_defaults_to_active()
     {
         $currency = Currency::create([
@@ -91,6 +103,9 @@ class CurrencyTest extends TestCase
         $this->assertTrue((bool) $currency->is_active);
     }
 
+    /**
+     * Test that the currency code is unique.
+     */
     public function test_currency_code_is_unique()
     {
         Currency::create([
@@ -110,6 +125,9 @@ class CurrencyTest extends TestCase
         ]);
     }
 
+    /**
+     * Test that the currency can be updated.
+     */
     public function test_currency_can_be_updated()
     {
         $currency = Currency::create([
@@ -128,6 +146,9 @@ class CurrencyTest extends TestCase
         $this->assertEquals(7.50, $currency->fresh()->surcharge_percentage);
     }
 
+    /**
+     * Test that the currency can be deactivated.
+     */
     public function test_currency_can_be_deactivated()
     {
         $currency = Currency::create([
