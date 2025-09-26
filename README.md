@@ -27,7 +27,7 @@ A Laravel + Inertia/Vue application for managing currency exchange orders.
 ### 1) Clone and install dependencies
 ```bash
 # Clone
-git clone <repo-url>
+git clone https://github.com/Blaine-Dev/XChaChange.git
 cd XChaChange
 
 # Install PHP dependencies
