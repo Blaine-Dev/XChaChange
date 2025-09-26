@@ -140,8 +140,8 @@ php artisan test tests/Feature/OrderControllerTest.php
 php artisan test --coverage
 ```
 ### Notes
-- Please find ERD in `docs/XChaChange_ERD.png` - Made with personal Canva Account and was my first step in planning for this project
-- Please find API documentation in `docs/XChaChange_API_Documentation.pdf`
+- Please find ERD in `docs/XChaChange_ERD.png` Made with personal Canva Account and was my first step in planning for this project
+- Please find API documentation in `docs/XChaChange_API_Documentation.pdf` Made with personal Canva Account
 - Laravel Breeze was used for authentication
 - Although I know this may be a detriment to me, AI was used for vue views as I don't have much experience with vue + for unit tests as I don't have much experience with unit testing either. I am however proud of what I have done and will continue to improve my skills and learn as I go.
 - Logo was made with Canva via templates
